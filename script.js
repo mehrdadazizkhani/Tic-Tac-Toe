@@ -16,6 +16,7 @@ const conditions = [
 let playerSwitch = false
 let playerX = []
 let playerY = []
+let resultPattern = []
 
 
 for (let i = 0;i < 9; i++) {
@@ -30,9 +31,14 @@ function restartHandler () {
         cell[i].addEventListener("click", clickHandler)
     }
     playerTurn.innerText = `Player X turn`
+    restart.innerText = "restart"
+    playerSwitch = false
     playerX = []
     playerY = []
-    restart.innerText = "restart"
+    resultPattern = []
+    for (let i = 0; i < cell.length; i++) {
+        cell[i].className = ""
+    }
 }
 
 
@@ -42,11 +48,10 @@ function clickHandler (event) {
     event.target.removeEventListener("click", clickHandler)
     playerTurn.innerText = `Player ${playerSwitch ? "X" : "O"} turn`
     playerSwitch = !playerSwitch
-    event.target.innerText = playerSwitch ? "X" : "O"
+    event.target.innerHTML = playerSwitch ? "X" : "O"
     playerSwitch && playerX.push(Number(event.target.id))
     !playerSwitch && playerY.push(Number(event.target.id))
-    // console.log(playerX)
-    // console.log(playerY)
+
     if (playerX.length >= 3) {
         if (winCondition(playerX)) {
             for (let i = 0;i < 9; i++) {
@@ -65,6 +70,10 @@ function clickHandler (event) {
             restart.innerText = "next game"
         }
     }
+
+    for (let i = 0; i < resultPattern.length; i++) {
+        cell[resultPattern[i]-1].className = "result"
+    }
 }
 
 
@@ -74,9 +83,15 @@ function winCondition(player) {
     for (let i = 0; i < conditions.length; i++) {
         let result = []
         for (let j = 0; j < player.length; j++) {
-            conditions[i].includes(player[j]) ? result.push(true) : result.push(false)
+            conditions[i].includes(player[j]) && result.push(true)
         } 
         result.filter(x => x==true).length >= 3 ? finalResult.push(true) : finalResult.push(false)
     }
+    for (let i = 0; i < finalResult.length; i++) {
+        if (finalResult[i]) {
+            resultPattern = conditions[i]
+        }
+    }
     return finalResult.filter(x => x==true).length > 0 && true
 }
+

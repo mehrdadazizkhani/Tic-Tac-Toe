@@ -1,14 +1,59 @@
 body {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 5rem;
+    background-color: bisque;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    text-transform: uppercase;
+    background-color: tomato;
+    width: 100%;
+    border-radius: 10px;
+    height: 50px;
+    color: bisque;
 }
 
 td {
     cursor: pointer;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background-color: tomato;
     text-align: center;
-    color: white;
+    color: bisque;
+    border-radius: 10px;
+    font-size: 150%;
 }
 
+.restart {
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    border: none;
+    background-color: tomato;
+    font-size: 50%;
+    color: bisque;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+
+.result {
+    color: black;
+}
