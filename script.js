@@ -1,6 +1,8 @@
 const playerTurn = document.querySelector('.player')
 const cell = document.querySelectorAll('td')
 const restart = document.querySelector('.restart')
+const playerXPoindsCell = document.querySelectorAll('.left')
+const playerYPoindsCell = document.querySelectorAll('.right')
 
 const conditions = [
     [1,2,3],
@@ -17,6 +19,8 @@ let playerSwitch = false
 let playerX = []
 let playerY = []
 let resultPattern = []
+let playerXPoints = 0
+let playerYPoints = 3
 
 
 for (let i = 0;i < 9; i++) {
@@ -29,26 +33,34 @@ function restartHandler () {
     for (let i = 0;i < 9; i++) {
         cell[i].innerText = ""
         cell[i].addEventListener("click", clickHandler)
+        cell[i].className = ""
     }
+
+    if(playerXPoints == 4 || playerYPoints == -1) {
+        for(let i = 0; i < playerXPoindsCell.length; i++) {
+            playerXPoindsCell[i].classList.remove('point')
+            playerYPoindsCell[i].classList.remove('point')
+        }
+        playerXPoints = 0
+        playerYPoints = 3
+    }
+
     playerTurn.innerText = `Player X turn`
-    restart.innerText = "restart"
+    restart.innerText = "reset"
     playerSwitch = false
     playerX = []
     playerY = []
     resultPattern = []
-    for (let i = 0; i < cell.length; i++) {
-        cell[i].className = ""
-    }
 }
 
 
-playerTurn.innerText = `Player ${playerSwitch ? "O" : "X"} turn`
+playerTurn.innerText = `Player x turn`
 
 function clickHandler (event) {
     event.target.removeEventListener("click", clickHandler)
     playerTurn.innerText = `Player ${playerSwitch ? "X" : "O"} turn`
     playerSwitch = !playerSwitch
-    event.target.innerHTML = playerSwitch ? "X" : "O"
+    event.target.innerText = playerSwitch ? "X" : "O"
     playerSwitch && playerX.push(Number(event.target.id))
     !playerSwitch && playerY.push(Number(event.target.id))
 
@@ -57,28 +69,42 @@ function clickHandler (event) {
             for (let i = 0;i < 9; i++) {
                 cell[i].removeEventListener("click", clickHandler)
             }
+            playerXPoints ++
+            for (let i = 0; i < playerXPoints; i++) {
+                playerXPoindsCell[i].classList.add('point')
+            }
             playerTurn.innerText = `Player X won`
-            restart.innerText = "next game"
+            if(playerXPoints == 4 || playerYPoints == -1) {
+                restart.innerText = "new game"
+            } else {
+                restart.innerText = "next game"
+            }
         } else if (winCondition(playerY)) {
             for (let i = 0;i < 9; i++) {
                 cell[i].removeEventListener("click", clickHandler)
             }
+            playerYPoints --
+            for (let i = 3; i > playerYPoints; i--) {
+                playerYPoindsCell[i].classList.add('point')
+            }
             playerTurn.innerText = `Player O won`
-            restart.innerText = "next game"
+            if(playerXPoints == 4 || playerYPoints == -1) {
+                restart.innerText = "new game"
+            } else {
+                restart.innerText = "next game"
+            }
         } else if (playerX.length == 5) {
             playerTurn.innerText = `Draw`
             restart.innerText = "next game"
         }
     }
 
-    for (let i = 0; i < resultPattern.length; i++) {
-        cell[resultPattern[i]-1].className = "result"
+    for (let i = 0; i < 3; i++) {
+        if(resultPattern.length > 2)  {cell[resultPattern[i]-1].className = "result"}
     }
 }
 
-
-
-function winCondition(player) {
+function winCondition(player) { 
     let finalResult = []
     for (let i = 0; i < conditions.length; i++) {
         let result = []
