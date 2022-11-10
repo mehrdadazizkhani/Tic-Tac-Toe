@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -26,8 +27,7 @@
             <div class="seprator after-invert"></div>
             <span class="player-name player-o">player o</span>
         </div>
-        <table>
-            <tbody>
+        <table class="key-container">
                 <tr>
                     <td id="1"></td>
                     <td id="2"></td>
@@ -43,10 +43,14 @@
                     <td id="8"></td>
                     <td id="9"></td>
                 </tr>
-            </tbody>
         </table>
-        <button class="restart">reset</button>
+        <div class="button-container">
+            <button class="buttun restart">reset</button>
+            <button class="buttun new-game hide">new game</button>
+        </div>
     </div>
+    <div class="score"></div>
+    <span class="score-text"></span>
     <script src="./script.js"></script>
 </body>
 </html>

@@ -37,7 +37,7 @@ body {
 .games {
     height: 100%;
     background-color: var(--primary-color);
-    width: 20px;
+    width: 10px;
 }
 
 .right {
@@ -61,7 +61,7 @@ body {
 
 .seprator {
     background-color: var(--primary-color);
-    width: 5px;
+    width: 2.5px;
     height: 100%;
 }
 
@@ -90,6 +90,7 @@ body {
     background-color: var(--primary-color);
     flex-grow: 1;
     height: 100%;
+    padding: 0 10px;
 }
 
 .player-x {
@@ -102,33 +103,44 @@ body {
     border-radius: 0 20px 0 0;
 }
 
-table {
+.key-container {
     border-collapse: collapse;
+    width: 100%;
+    aspect-ratio: 1/1;
 }
 
 td {
     border: 2px solid var(--background-color);
     cursor: pointer;
-    width: 200px;
-    height: 200px;
+    width: 33.33%;
+    height: 33.33%;
     background-color: var(--primary-color);
     text-align: center;
     color: var(--background-color);
     font-size: 150%;
 }
 
-.restart {
+.button-container {
+    display: flex;
     width: 100%;
-    height: 100px;
-    background-color: var(--primary-color);
-    font-size: 50%;
-    color: var(--background-color);
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 2px solid var(--background-color);
     border-radius: 0 0 20px 20px;
+    overflow: hidden;
+    height: 60px;
 }
 
+.buttun {
+    height: 100%;
+    font-size: 2rem;
+    color: var(--background-color);
+    width: 100%;
+    background-color: var(--primary-color);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
 
 .result {
     color: var(--secondary-color);
@@ -136,4 +148,88 @@ td {
 
 .point {
     background-color: var(--secondary-color);
+}
+
+
+.score {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: center center;
+    transition: all 1s linear;
+    animation: rotate 8s linear;
+    background: repeating-conic-gradient(var(--secondary-color) 0deg calc(360/10*1deg), var(--background-color) calc(360/10*1deg) calc(360/10*2*1deg));
+}
+
+@keyframes rotate {
+    0% {transform: rotate(0deg) scale(5);}
+    100% {transform: rotate(360deg) scale(5);}
+}
+
+.score-active {
+    display: flex;
+}
+
+.score-text {
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    font-size: 7rem;
+    font-family: 'Modak', cursive;
+    color: aliceblue;
+    transform-origin: center center;
+    transform: rotate(-10deg);
+    animation: move 1s infinite ease-in-out;
+}
+
+.score-text::before {
+    -webkit-text-stroke: 0.21em black;
+}
+
+@keyframes move {
+    0% {transform: rotate(-10deg);}
+    50% {transform: rotate(10deg);}
+    100% {transform: rotate(-10deg);}
+}
+
+.score-text-active {
+    display: flex;
+}
+
+
+@media screen and (max-width: 700px) {
+    
+    .player-container {
+        height: 7%;
+    }
+
+    td {
+        font-size: 4rem;
+    }
+
+    .player-name {
+        font-size: 0.6rem;
+        font-weight: bold;
+    }
+
+    .player {
+        width: 80px;
+        font-size: 0.5rem;
+        font-weight: bold;
+    }
+
+    .button-container {
+        height: 40px;
+    }
+
+    .buttun {
+        height: 100%;
+        font-size: 1rem;
+    }
 }

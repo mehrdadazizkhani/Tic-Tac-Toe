@@ -1,8 +1,15 @@
 const playerTurn = document.querySelector('.player')
 const cell = document.querySelectorAll('td')
 const restart = document.querySelector('.restart')
-const playerXPoindsCell = document.querySelectorAll('.left')
-const playerYPoindsCell = document.querySelectorAll('.right')
+const newGame = document.querySelector('.new-game')
+const playerXPointsCell = document.querySelectorAll('.left')
+const playerYPointsCell = document.querySelectorAll('.right')
+const games = document.querySelectorAll('.games')
+const score = document.querySelector('.score')
+const scoreText = document.querySelector('.score-text')
+
+const winSound = new Audio('./win.mp3')
+const winMatchSound = new Audio('./win-match.mp3')
 
 const conditions = [
     [1,2,3],
@@ -37,9 +44,9 @@ function restartHandler () {
     }
 
     if(playerXPoints == 4 || playerYPoints == -1) {
-        for(let i = 0; i < playerXPoindsCell.length; i++) {
-            playerXPoindsCell[i].classList.remove('point')
-            playerYPoindsCell[i].classList.remove('point')
+        for(let i = 0; i < playerXPointsCell.length; i++) {
+            playerXPointsCell[i].classList.remove('point')
+            playerYPointsCell[i].classList.remove('point')
         }
         playerXPoints = 0
         playerYPoints = 3
@@ -71,12 +78,20 @@ function clickHandler (event) {
             }
             playerXPoints ++
             for (let i = 0; i < playerXPoints; i++) {
-                playerXPoindsCell[i].classList.add('point')
+                playerXPointsCell[i].classList.add('point')
             }
             playerTurn.innerText = `Player X won`
-            if(playerXPoints == 4 || playerYPoints == -1) {
-                restart.innerText = "new game"
+            if (playerXPoints == 4) {
+                scoreText.innerText = `X WON THE MATCH ${playerXPoints} - ${3-playerYPoints}`
+                scoreHandler(3000)
+                restart.classList.add("hide")
+                playerTurn.innerText = `X won the match`
+                winMatchSound.play()
             } else {
+                scoreText.innerText = `${playerXPoints} - ${3-playerYPoints}`
+                scoreHandler(1000)
+                winSound.play()
+                newGame.classList.remove("hide")
                 restart.innerText = "next game"
             }
         } else if (winCondition(playerY)) {
@@ -85,13 +100,21 @@ function clickHandler (event) {
             }
             playerYPoints --
             for (let i = 3; i > playerYPoints; i--) {
-                playerYPoindsCell[i].classList.add('point')
+                playerYPointsCell[i].classList.add('point')
             }
             playerTurn.innerText = `Player O won`
-            if(playerXPoints == 4 || playerYPoints == -1) {
-                restart.innerText = "new game"
+            if (playerYPoints == -1) {
+                restart.classList.add("hide")
+                playerTurn.innerText = `O won the match`
+                winMatchSound.play()
+                scoreText.innerText = `O WON THE MATCH ${playerXPoints} - ${3-playerYPoints}`
+                scoreHandler(3000)
             } else {
+                scoreText.innerText = `${playerXPoints} - ${3-playerYPoints}`
+                scoreHandler(1000)
+                newGame.classList.remove("hide")
                 restart.innerText = "next game"
+                winSound.play()
             }
         } else if (playerX.length == 5) {
             playerTurn.innerText = `Draw`
@@ -102,7 +125,12 @@ function clickHandler (event) {
     for (let i = 0; i < 3; i++) {
         if(resultPattern.length > 2)  {cell[resultPattern[i]-1].className = "result"}
     }
+
+    if (playerXPoints > 0 || playerYPoints < 3) {
+        newGame.classList.remove('hide')
+    }
 }
+
 
 function winCondition(player) { 
     let finalResult = []
@@ -121,3 +149,26 @@ function winCondition(player) {
     return finalResult.filter(x => x==true).length > 0 && true
 }
 
+const newGameHandler = () => {
+    games.forEach(game => {
+        game.classList.remove('point')
+    })
+    restartHandler()
+    playerXPoints = 0
+    playerYPoints = 3
+    newGame.classList.add('hide')
+    restart.classList.remove('hide')
+}
+
+newGame.addEventListener("click", newGameHandler)
+
+const scoreHandler = (delay) => {
+    score.classList.add("score-active")
+    scoreText.classList.add("score-text-active")
+    setTimeout(scoreClear, delay)
+}
+
+const scoreClear = () => {
+    score.classList.remove("score-active")
+    scoreText.classList.remove("score-text-active")
+}
