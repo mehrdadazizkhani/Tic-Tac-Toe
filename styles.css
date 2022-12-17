@@ -232,4 +232,8 @@ td {
         height: 100%;
         font-size: 1rem;
     }
+
+    .score-text {
+        font-size: 30px;
+    }
 }
